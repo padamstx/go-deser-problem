@@ -1,7 +1,8 @@
 # go-deser-problem
 
 The purpose of this repo is to demonstrate a problem that I ran into while trying to support
-the OpenAPI `oneOf` feature in Go.
+the OpenAPI `oneOf` feature in Go.  Along with the description of the problem in this README,
+the "deser_problem" package contains some example code along with a testcase that (hopefully) illustrates what I'm trying to accomplish.
 
 In the problem I'm trying to solve, I have an example struct defined with two fields like this:
 
