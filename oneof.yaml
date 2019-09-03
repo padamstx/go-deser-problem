@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: issue-998
+  description: A simple API using oneOf.
+  version: 1.0.0
+  x-codegen-config:
+    java:
+      apiPackage: 'com.ibm.test'
+    go:
+      apiPackage: 'github.ibm.com/CloudEngineering/go-test'
+paths:
+  '/resource':
+    post:
+      summary: Create a resource.
+      description: Creates a resource object.
+      operationId: createresource
+      x-codegen-request-body-name: resource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '201':
+          description: It worked!!!
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Resource'
+        default:
+          description: Rut Roh!
+
+components:
+  schemas:
+    Resource:
+      properties:
+        id:
+          description: The resource id.
+          type: string
+        info:
+          $ref: '#/components/schemas/Info'
+      required:
+        - id
+    Info:
+      type: object
+      description:  Information about a resource.
+      oneOf:
+        - $ref: '#/components/schemas/FooInfo'
+        - $ref: '#/components/schemas/BarInfo'
+    FooInfo:
+      type: object
+      description:  Foo Info.
+      properties:
+        foo:
+          description: The foo of the resource.
+          type: string
+      required:
+        - foo
+    BarInfo:
+      type: object
+      description:  Bar Info.
+      properties:
+        bar:
+          description: The bar of the resource.
+          type: string
+      required:
+        - bar
