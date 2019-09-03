@@ -18,10 +18,10 @@
 package deser_problem
 
 import (
-// "fmt"
+	"encoding/json"
 )
 
-// Resource : Resource struct
+// Resource : Resource struct.
 type Resource struct {
 
 	// The resource id.
@@ -29,6 +29,33 @@ type Resource struct {
 
 	// Information about a resource.
 	Info InfoIntf `json:"info,omitempty"`
+}
+
+// UnmarshalJSON: A custom de-serializer for instances of Resource.
+func (obj *Resource) UnmarshalJSON(data []byte) error {
+	var deserTarget resourceDeserTarget
+	if err := json.Unmarshal(data, &deserTarget); err != nil {
+		return err
+	}
+	*obj = deserTarget.Resource()
+	return nil
+}
+
+// ResourceDeserTarget : de-serialization target for the Resource struct.
+type resourceDeserTarget struct {
+
+	// The resource id.
+	ID string `json:"id" validate:"required"`
+
+	// Information about a resource.
+	Info *Info `json:"info,omitempty"`
+}
+
+func (obj resourceDeserTarget) Resource() Resource {
+	return Resource{
+		obj.ID,
+		obj.Info,
+	}
 }
 
 // Info : Information about a resource.
